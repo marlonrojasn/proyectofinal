@@ -1,11 +1,9 @@
 import streamlit as st
 st.title("Especialización en Python For Analytics")
-st.sidebar.markdown(
-    "<h2 style='text-align: center;'>Módulos</h2>",
-    unsafe_allow_html=True)
+
 Módulos = st.sidebar.selectbox(
     "Desplegar",
-    ["Home", "Carga del Data Set", "Ejercicio 2", "Ejercicio 3", "Ejercicio 4"])
+    ["Home", "Carga del Data Set", "Ejercicio 2"])
 
 if Módulos == "Home":
 

@@ -12,8 +12,7 @@ if Módulos == "Home":
     st.write("Telco Customer Churn")
     st.image("prog.png", width=300)
 
-    st.write(
-        "Análisis de la salida de clientes en la empresa Telco")
+    st.write("Análisis de la salida de clientes en la empresa Telco")
   
    st.write("Marlon Jerson Rojas Novoa")
 

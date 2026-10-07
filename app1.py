@@ -14,7 +14,7 @@ if Módulos == "Home":
 
     st.write("Análisis de la salida de clientes en la empresa Telco")
   
-   st.write("Marlon Jerson Rojas Novoa")
+    st.write("Marlon Jerson Rojas Novoa")
 
     st.write("Año: 2026")
 

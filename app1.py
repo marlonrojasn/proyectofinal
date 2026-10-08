@@ -51,4 +51,3 @@ if Módulos == "Home":
         "• Matplotlib / Seaborn: utilizadas para la generación de visualizaciones.\n"
         "• NumPy: utilizada para operaciones y procesamiento numérico."
     )
-```

@@ -57,7 +57,7 @@ elif Módulos == "Carga del Data Set":
     st.header("Carga del Data Set")
 
     st.write(
-        "Seleccione el archivo CSV TelcoCustomerChurn para cargar "
+        "Seleccione el archivo CSV para cargar "
         "y visualizar la información del dataset."
     )
 

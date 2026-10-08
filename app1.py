@@ -235,8 +235,7 @@ elif Módulos == "Items":
             "La media representa el valor promedio de cada variable, "
             "mientras que la mediana corresponde al valor central. "
             "La desviación estándar permite observar la dispersión "
-            "de los datos respecto a la media. Los valores mínimo y "
-            "máximo permiten identificar el rango de cada variable."
+            "de los datos respecto a la media."
         )
 
 
@@ -244,8 +243,7 @@ elif Módulos == "Items":
 
         st.write(
             "En este ítem se analiza la cantidad de valores nulos "
-            "presentes en cada variable y se presenta una visualización "
-            "para identificar las variables que contienen datos faltantes."
+            "presentes en cada variable."
         )
 
         nulos = df.isnull().sum()
@@ -278,23 +276,19 @@ elif Módulos == "Items":
 
             st.write(
                 "Las variables que presentan valores nulos requieren "
-                "una revisión antes de realizar análisis posteriores, "
-                "ya que los datos faltantes pueden afectar los resultados."
+                "una revisión antes de realizar análisis posteriores."
             )
 
         else:
 
-            st.success(
-                "El dataset no presenta valores nulos."
-            )
+            st.success("El dataset no presenta valores nulos.")
 
 
         st.subheader("Ítem 5: Distribución de variables numéricas")
 
         st.write(
             "En este ítem se analiza la distribución de las variables "
-            "numéricas mediante histogramas. Los histogramas permiten "
-            "observar la concentración y dispersión de los valores."
+            "numéricas mediante histogramas."
         )
 
         for columna in variables_numericas:
@@ -317,19 +311,12 @@ elif Módulos == "Items":
 
             st.pyplot(fig)
 
-            st.write(
-                f"El histograma de {columna} permite observar cómo "
-                "se distribuyen sus valores y dónde se concentra "
-                "la mayor frecuencia de registros."
-            )
-
 
         st.subheader("Ítem 6: Análisis de variables categóricas")
 
         st.write(
             "En este ítem se analizan las variables categóricas mediante "
-            "el conteo de sus categorías y gráficos de barras. Esto permite "
-            "identificar las categorías con mayor frecuencia."
+            "el conteo de sus categorías y gráficos de barras."
         )
 
         for columna in variables_categoricas:
@@ -367,8 +354,356 @@ elif Módulos == "Items":
 
             st.pyplot(fig)
 
+
+        st.subheader("Ítem 7: Análisis bivariado numérico vs categórico")
+
+        st.write(
+            "En este ítem se analiza la relación entre variables numéricas "
+            "y la variable Churn. Se comparan variables como MonthlyCharges "
+            "y tenure según el estado de abandono del cliente."
+        )
+
+        if "Churn" in df.columns:
+
+            variables_bivariado = []
+
+            for columna in ["MonthlyCharges", "tenure"]:
+
+                if columna in df.columns and pd.api.types.is_numeric_dtype(df[columna]):
+                    variables_bivariado.append(columna)
+
+            for columna in variables_bivariado:
+
+                st.write(f"Análisis de {columna} vs Churn")
+
+                fig, ax = plt.subplots(figsize=(8, 5))
+
+                sns.boxplot(
+                    data=df,
+                    x="Churn",
+                    y=columna,
+                    ax=ax
+                )
+
+                ax.set_title(
+                    f"{columna} vs Churn"
+                )
+
+                ax.set_xlabel("Churn")
+                ax.set_ylabel(columna)
+
+                st.pyplot(fig)
+
+                resumen = df.groupby("Churn")[columna].agg(
+                    ["mean", "median", "std"]
+                ).reset_index()
+
+                resumen.columns = [
+                    "Churn",
+                    "Media",
+                    "Mediana",
+                    "Desviación estándar"
+                ]
+
+                st.dataframe(resumen)
+
             st.write(
-                f"El gráfico permite identificar las categorías más "
-                f"frecuentes de la variable {columna} y comparar "
-                "su participación dentro del dataset."
+                "Los gráficos permiten comparar la distribución de las "
+                "variables numéricas entre los clientes que permanecieron "
+                "y los que abandonaron el servicio."
+            )
+
+        else:
+
+            st.warning(
+                "No se encontró la variable Churn en el dataset."
+            )
+
+
+        st.subheader("Ítem 8: Análisis bivariado categórico vs categórico")
+
+        st.write(
+            "En este ítem se analiza la relación entre variables categóricas "
+            "y la variable Churn mediante tablas de frecuencia y gráficos "
+            "de barras."
+        )
+
+        if "Churn" in df.columns:
+
+            variables_categoricas_bivariado = []
+
+            for columna in ["Contract", "InternetService"]:
+
+                if columna in df.columns:
+                    variables_categoricas_bivariado.append(columna)
+
+            for columna in variables_categoricas_bivariado:
+
+                st.write(f"Análisis de {columna} vs Churn")
+
+                tabla = pd.crosstab(
+                    df[columna],
+                    df["Churn"]
+                )
+
+                st.dataframe(tabla)
+
+                tabla_proporcion = pd.crosstab(
+                    df[columna],
+                    df["Churn"],
+                    normalize="index"
+                ) * 100
+
+                st.write("Proporción de Churn por categoría (%)")
+
+                st.dataframe(
+                    tabla_proporcion.round(2)
+                )
+
+                fig, ax = plt.subplots(figsize=(9, 5))
+
+                tabla.plot(
+                    kind="bar",
+                    ax=ax
+                )
+
+                ax.set_title(
+                    f"{columna} vs Churn"
+                )
+
+                ax.set_xlabel(columna)
+                ax.set_ylabel("Cantidad de clientes")
+
+                plt.xticks(rotation=45, ha="right")
+
+                st.pyplot(fig)
+
+            st.write(
+                "Las tablas y gráficos permiten identificar diferencias "
+                "en el comportamiento de Churn según las categorías "
+                "de cada variable."
+            )
+
+        else:
+
+            st.warning(
+                "No se encontró la variable Churn en el dataset."
+            )
+
+
+        st.subheader("Ítem 9: Análisis basado en parámetros seleccionados")
+
+        st.write(
+            "En este ítem el usuario puede seleccionar variables del "
+            "dataset para realizar un análisis dinámico."
+        )
+
+        columnas_numericas_validas = [
+            columna for columna in df.columns
+            if pd.api.types.is_numeric_dtype(df[columna])
+        ]
+
+        columnas_categoricas_validas = [
+            columna for columna in df.columns
+            if not pd.api.types.is_numeric_dtype(df[columna])
+        ]
+
+        if len(columnas_numericas_validas) > 0:
+
+            variable_numerica = st.selectbox(
+                "Seleccione una variable numérica",
+                columnas_numericas_validas
+            )
+
+        else:
+
+            variable_numerica = None
+
+        if len(columnas_categoricas_validas) > 0:
+
+            variables_categoricas_seleccionadas = st.multiselect(
+                "Seleccione una o más variables categóricas",
+                columnas_categoricas_validas
+            )
+
+        else:
+
+            variables_categoricas_seleccionadas = []
+
+        if variable_numerica is not None:
+
+            st.write(
+                f"Análisis de la variable numérica: "
+                f"{variable_numerica}"
+            )
+
+            st.write(
+                df[variable_numerica].describe()
+            )
+
+            fig, ax = plt.subplots(figsize=(8, 4))
+
+            sns.histplot(
+                data=df,
+                x=variable_numerica,
+                kde=True,
+                ax=ax
+            )
+
+            ax.set_title(
+                f"Distribución de {variable_numerica}"
+            )
+
+            ax.set_xlabel(variable_numerica)
+            ax.set_ylabel("Frecuencia")
+
+            st.pyplot(fig)
+
+        for variable_categorica in variables_categoricas_seleccionadas:
+
+            st.write(
+                f"Análisis de {variable_categorica}"
+            )
+
+            conteo = df[variable_categorica].value_counts()
+
+            st.dataframe(
+                conteo.reset_index(
+                    name="Cantidad"
+                )
+            )
+
+            fig, ax = plt.subplots(figsize=(9, 4))
+
+            sns.countplot(
+                data=df,
+                x=variable_categorica,
+                ax=ax
+            )
+
+            ax.set_title(
+                f"Distribución de {variable_categorica}"
+            )
+
+            ax.set_xlabel(variable_categorica)
+            ax.set_ylabel("Cantidad")
+
+            plt.xticks(rotation=45, ha="right")
+
+            st.pyplot(fig)
+
+
+        st.subheader("Ítem 10: Hallazgos clave")
+
+        st.write(
+            "En este ítem se presentan algunos hallazgos principales "
+            "obtenidos durante el análisis exploratorio de los datos."
+        )
+
+        if "Churn" in df.columns:
+
+            cantidad_clientes = len(df)
+
+            clientes_churn = (
+                df["Churn"]
+                .astype(str)
+                .str.strip()
+                .str.lower()
+                .eq("yes")
+                .sum()
+            )
+
+            porcentaje_churn = (
+                clientes_churn / cantidad_clientes
+            ) * 100
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+
+                st.metric(
+                    "Total de clientes",
+                    cantidad_clientes
+                )
+
+            with col2:
+
+                st.metric(
+                    "Tasa de Churn",
+                    f"{porcentaje_churn:.2f}%"
+                )
+
+            st.write("Distribución general de Churn")
+
+            conteo_churn = df["Churn"].value_counts()
+
+            fig, ax = plt.subplots(figsize=(7, 4))
+
+            conteo_churn.plot(
+                kind="bar",
+                ax=ax
+            )
+
+            ax.set_title("Distribución de Churn")
+            ax.set_xlabel("Churn")
+            ax.set_ylabel("Cantidad de clientes")
+
+            plt.xticks(rotation=0)
+
+            st.pyplot(fig)
+
+            st.write("Principales insights")
+
+            st.write(
+                f"1. El dataset contiene {cantidad_clientes} clientes "
+                f"analizados."
+            )
+
+            st.write(
+                f"2. La tasa general de abandono de clientes es "
+                f"{porcentaje_churn:.2f}%."
+            )
+
+            if "tenure" in df.columns:
+
+                promedio_tenure = df.groupby("Churn")["tenure"].mean()
+
+                st.write(
+                    "3. La variable tenure permite comparar la antigüedad "
+                    "promedio de los clientes según su estado de Churn."
+                )
+
+                st.dataframe(
+                    promedio_tenure.reset_index(
+                        name="Antigüedad promedio"
+                    )
+                )
+
+            if "MonthlyCharges" in df.columns:
+
+                promedio_cargos = df.groupby("Churn")[
+                    "MonthlyCharges"
+                ].mean()
+
+                st.write(
+                    "4. MonthlyCharges permite comparar el cargo mensual "
+                    "promedio entre los diferentes grupos de Churn."
+                )
+
+                st.dataframe(
+                    promedio_cargos.reset_index(
+                        name="Cargo mensual promedio"
+                    )
+                )
+
+            st.write(
+                "Estos hallazgos permiten identificar patrones iniciales "
+                "relacionados con el abandono de clientes y sirven como "
+                "base para análisis posteriores."
+            )
+
+        else:
+
+            st.warning(
+                "No se encontró la variable Churn en el dataset."
             )

@@ -1,6 +1,8 @@
 import streamlit as st
 st.title("Proyecto Análisis Churn")
 
+st.image("imagen1.jpg")
+
 st.sidebar.image("internet.jpg", width=150)
 
 Módulos = st.sidebar.selectbox(

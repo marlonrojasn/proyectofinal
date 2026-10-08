@@ -29,9 +29,9 @@ if Módulos == "Home":
 
     st.subheader("Datos del autor")
 
-    st.write("**Nombre completo:** Marlon Jerson Rojas Novoa")
-    st.write("**Curso / Especialización:** Data Science")
-    st.write("**Año:** 2026")
+    st.write("Nombre completo: Marlon Jerson Rojas Novoa")
+    st.write("Curso / Especialización: Data Science")
+    st.write("Año: 2026")
 
     st.subheader("Descripción del Dataset")
 
@@ -46,12 +46,13 @@ if Módulos == "Home":
     st.subheader("Tecnologías utilizadas")
 
     st.write(
-        "• Python: lenguaje utilizado para el desarrollo del proyecto.\n"
-        "• Pandas: utilizada para la carga, manipulación y análisis de los datos.\n"
-        "• Streamlit: utilizada para desarrollar la aplicación web interactiva.\n"
-        "• Matplotlib / Seaborn: utilizadas para la generación de visualizaciones.\n"
-        "• NumPy: utilizada para operaciones y procesamiento numérico."
+        "Python: lenguaje utilizado para el desarrollo del proyecto.\n\n"
+        "Pandas: utilizada para la carga, manipulación y análisis de los datos.\n\n"
+        "Streamlit: utilizada para desarrollar la aplicación web interactiva.\n\n"
+        "Matplotlib / Seaborn: utilizadas para la generación de visualizaciones.\n\n"
+        "NumPy: utilizada para operaciones y procesamiento numérico."
     )
+
 
 elif Módulos == "Carga del Data Set":
 
@@ -71,8 +72,9 @@ elif Módulos == "Carga del Data Set":
 
         st.success("El archivo fue cargado correctamente.")
 
-        # Lectura del archivo CSV separado por comas
         df = pd.read_csv(archivo, sep=",")
+
+        st.session_state["df"] = df
 
         st.subheader("Vista previa del Dataset")
 
@@ -82,9 +84,64 @@ elif Módulos == "Carga del Data Set":
 
         filas, columnas = df.shape
 
-        st.write(f"**Filas:** {filas}")
-        st.write(f"**Columnas:** {columnas}")
+        st.write(f"Filas: {filas}")
+        st.write(f"Columnas: {columnas}")
 
-elif Módulos == "Items": st.header("Ítems de Análisis") if "df" not in st.session_state: st.warning( "Primero debe cargar un archivo CSV " "en el módulo 'Carga del Data Set'." ) else: df = st.session_state["df"] # ===================================================== # ÍTEM 1 # ===================================================== st.subheader("Ítem 1: Información general del dataset") st.write( "En este ítem se analiza la estructura general del dataset, " "identificando el número de registros, las variables, " "los tipos de datos y la cantidad de valores nulos." ) st.write("### Información general (.info())") buffer = io.StringIO() df.info(buf=buffer) st.text(buffer.getvalue()) st.write("### Tipos de datos") tipos = pd.DataFrame({ "Variable": df.columns, "Tipo de dato": df.dtypes.astype(str).values }) st.dataframe(tipos) st.write("### Conteo de valores nulos") nulos = df.isnull().sum() tabla_nulos = pd.DataFrame({ "Variable": nulos.index, "Valores nulos": nulos.values }) st.dataframe(tabla_nulos) st.write( f"**Total de filas:** {df.shape[0]} \n" f"**Total de columnas:** {df.shape[1]}" )
+    else:
 
-  
+        st.info("Por favor, cargue un archivo CSV.")
+
+
+elif Módulos == "Items":
+
+    st.header("Ítems de Análisis")
+
+    if "df" not in st.session_state:
+
+        st.warning(
+            "Primero debe cargar un archivo CSV "
+            "en el módulo Carga del Data Set."
+        )
+
+    else:
+
+        df = st.session_state["df"]
+
+        st.subheader("Ítem 1: Información general del dataset")
+
+        st.write(
+            "En este ítem se analiza la estructura general del dataset, "
+            "identificando el número de registros, las variables, "
+            "los tipos de datos y la cantidad de valores nulos."
+        )
+
+        st.write("Información general del dataset")
+
+        buffer = io.StringIO()
+
+        df.info(buf=buffer)
+
+        st.text(buffer.getvalue())
+
+        st.write("Tipos de datos")
+
+        tipos = pd.DataFrame({
+            "Variable": df.columns,
+            "Tipo de dato": df.dtypes.astype(str).values
+        })
+
+        st.dataframe(tipos)
+
+        st.write("Conteo de valores nulos")
+
+        nulos = df.isnull().sum()
+
+        tabla_nulos = pd.DataFrame({
+            "Variable": nulos.index,
+            "Valores nulos": nulos.values
+        })
+
+        st.dataframe(tabla_nulos)
+
+        st.write(f"Total de filas: {df.shape[0]}")
+        st.write(f"Total de columnas: {df.shape[1]}")

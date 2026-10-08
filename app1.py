@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import io
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 st.title("Proyecto Análisis Churn")
 
@@ -146,6 +148,7 @@ elif Módulos == "Items":
         st.write(f"Total de filas: {df.shape[0]}")
         st.write(f"Total de columnas: {df.shape[1]}")
 
+
         st.subheader("Ítem 2: Clasificación de variables")
 
         st.write(
@@ -213,3 +216,159 @@ elif Módulos == "Items":
 
         st.dataframe(conteo_variables)
 
+
+        st.subheader("Ítem 3: Estadísticas descriptivas")
+
+        st.write(
+            "En este ítem se calculan estadísticas descriptivas de las "
+            "variables numéricas del dataset. Se analizan medidas como "
+            "la media, mediana, desviación estándar, mínimo y máximo."
+        )
+
+        st.write("Estadísticas descriptivas")
+
+        estadisticas = df.describe()
+
+        st.dataframe(estadisticas)
+
+        st.write(
+            "La media representa el valor promedio de cada variable, "
+            "mientras que la mediana corresponde al valor central. "
+            "La desviación estándar permite observar la dispersión "
+            "de los datos respecto a la media. Los valores mínimo y "
+            "máximo permiten identificar el rango de cada variable."
+        )
+
+
+        st.subheader("Ítem 4: Análisis de valores nulos")
+
+        st.write(
+            "En este ítem se analiza la cantidad de valores nulos "
+            "presentes en cada variable y se presenta una visualización "
+            "para identificar las variables que contienen datos faltantes."
+        )
+
+        nulos = df.isnull().sum()
+
+        tabla_nulos = pd.DataFrame({
+            "Variable": nulos.index,
+            "Valores nulos": nulos.values
+        })
+
+        st.dataframe(tabla_nulos)
+
+        if nulos.sum() > 0:
+
+            nulos_grafico = nulos[nulos > 0]
+
+            fig, ax = plt.subplots(figsize=(10, 5))
+
+            nulos_grafico.plot(
+                kind="bar",
+                ax=ax
+            )
+
+            ax.set_title("Cantidad de valores nulos por variable")
+            ax.set_xlabel("Variables")
+            ax.set_ylabel("Cantidad de valores nulos")
+
+            plt.xticks(rotation=45, ha="right")
+
+            st.pyplot(fig)
+
+            st.write(
+                "Las variables que presentan valores nulos requieren "
+                "una revisión antes de realizar análisis posteriores, "
+                "ya que los datos faltantes pueden afectar los resultados."
+            )
+
+        else:
+
+            st.success(
+                "El dataset no presenta valores nulos."
+            )
+
+
+        st.subheader("Ítem 5: Distribución de variables numéricas")
+
+        st.write(
+            "En este ítem se analiza la distribución de las variables "
+            "numéricas mediante histogramas. Los histogramas permiten "
+            "observar la concentración y dispersión de los valores."
+        )
+
+        for columna in variables_numericas:
+
+            fig, ax = plt.subplots(figsize=(8, 4))
+
+            sns.histplot(
+                data=df,
+                x=columna,
+                kde=True,
+                ax=ax
+            )
+
+            ax.set_title(
+                f"Distribución de {columna}"
+            )
+
+            ax.set_xlabel(columna)
+            ax.set_ylabel("Frecuencia")
+
+            st.pyplot(fig)
+
+            st.write(
+                f"El histograma de {columna} permite observar cómo "
+                "se distribuyen sus valores y dónde se concentra "
+                "la mayor frecuencia de registros."
+            )
+
+
+        st.subheader("Ítem 6: Análisis de variables categóricas")
+
+        st.write(
+            "En este ítem se analizan las variables categóricas mediante "
+            "el conteo de sus categorías y gráficos de barras. Esto permite "
+            "identificar las categorías con mayor frecuencia."
+        )
+
+        for columna in variables_categoricas:
+
+            st.write(f"Variable: {columna}")
+
+            conteo = df[columna].value_counts(dropna=False)
+
+            tabla_categorias = pd.DataFrame({
+                "Categoría": conteo.index.astype(str),
+                "Cantidad": conteo.values,
+                "Proporción": (
+                    conteo.values / len(df)
+                ).round(4)
+            })
+
+            st.dataframe(tabla_categorias)
+
+            fig, ax = plt.subplots(figsize=(9, 4))
+
+            sns.countplot(
+                data=df,
+                x=columna,
+                ax=ax
+            )
+
+            ax.set_title(
+                f"Distribución de {columna}"
+            )
+
+            ax.set_xlabel(columna)
+            ax.set_ylabel("Cantidad")
+
+            plt.xticks(rotation=45, ha="right")
+
+            st.pyplot(fig)
+
+            st.write(
+                f"El gráfico permite identificar las categorías más "
+                f"frecuentes de la variable {columna} y comparar "
+                "su participación dentro del dataset."
+            )

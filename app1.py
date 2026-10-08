@@ -440,74 +440,125 @@ elif modulo == "Items":
 
 
                # ==========================================
-        # ITEM 6
+       
+        # ==========================================
+        # ITEM 6: VARIABLES CATEGÓRICAS
         # ==========================================
 
         elif item == "Ítem 6: Variables categóricas":
 
             st.header("Ítem 6: Variables categóricas")
 
-            variables_categoricas = df.select_dtypes(
-                include=["object", "category"]
-            ).columns.tolist()
+            st.write(
+                "Se analizarán las variables SeniorCitizen y Churn "
+                "mediante conteos, gráficos de barras y proporciones."
+            )
 
-            if variables_categoricas:
+            variables_analizar = ["SeniorCitizen", "Churn"]
 
-                for variable in variables_categoricas:
+            for variable in variables_analizar:
 
-                    st.subheader(f"Variable: {variable}")
-
-                    conteo = (
-                        df[variable]
-                        .fillna("Valores nulos")
-                        .astype(str)
-                        .value_counts()
+                if variable not in df.columns:
+                    st.warning(
+                        f"No se encontró la variable {variable} en el Dataset."
                     )
+                    continue
 
-                    porcentaje = (
-                        conteo / conteo.sum() * 100
-                    ).round(2)
+                st.subheader(f"Variable: {variable}")
 
-                    tabla = pd.DataFrame({
-                        "Categoría": conteo.index,
-                        "Frecuencia": conteo.values,
-                        "Porcentaje (%)": porcentaje.values
+                # Preparar los datos
+                datos = df[variable].copy()
+
+                if variable == "SeniorCitizen":
+                    datos = datos.map({
+                        0: "No adulto mayor",
+                        1: "Adulto mayor",
+                        "0": "No adulto mayor",
+                        "1": "Adulto mayor"
                     })
 
-                    st.dataframe(
-                        tabla,
-                        use_container_width=True
-                    )
+                else:
+                    datos = datos.astype("string")
 
-                    fig, ax = plt.subplots(figsize=(10, 5))
+                datos = datos.fillna("Valores nulos")
 
-                    ax.bar(
-                        conteo.index.astype(str),
-                        conteo.values
-                    )
+                # Conteos
+                conteo = datos.value_counts()
 
-                    ax.set_title(f"Distribución de {variable}")
-                    ax.set_xlabel(variable)
-                    ax.set_ylabel("Frecuencia")
+                # Proporciones
+                proporciones = (
+                    datos.value_counts(normalize=True) * 100
+                ).round(2)
 
-                    plt.setp(
-                        ax.get_xticklabels(),
-                        rotation=45,
-                        ha="right"
-                    )
+                tabla = pd.DataFrame({
+                    "Categoría": conteo.index,
+                    "Conteo": conteo.values,
+                    "Proporción (%)": [
+                        proporciones[categoria]
+                        for categoria in conteo.index
+                    ]
+                })
 
-                    fig.tight_layout()
+                st.write("**Conteos y proporciones**")
 
-                    st.pyplot(fig, clear_figure=True)
-
-                    plt.close(fig)
-
-            else:
-
-                st.warning(
-                    "No se encontraron variables categóricas."
+                st.dataframe(
+                    tabla,
+                    use_container_width=True,
+                    hide_index=True
                 )
 
+                # Gráfico de barras
+                fig, ax = plt.subplots(figsize=(8, 4))
+
+                barras = ax.bar(
+                    conteo.index.astype(str),
+                    conteo.values
+                )
+
+                ax.set_title(
+                    f"Distribución de {variable}"
+                )
+
+                ax.set_xlabel("Categoría")
+                ax.set_ylabel("Cantidad de clientes")
+
+                ax.bar_label(barras, padding=3)
+
+                fig.tight_layout()
+
+                st.pyplot(fig, clear_figure=True)
+
+                plt.close(fig)
+
+                # Gráfico de proporciones
+                fig, ax = plt.subplots(figsize=(8, 4))
+
+                barras = ax.bar(
+                    proporciones.index.astype(str),
+                    proporciones.values
+                )
+
+                ax.set_title(
+                    f"Proporción porcentual de {variable}"
+                )
+
+                ax.set_xlabel("Categoría")
+                ax.set_ylabel("Porcentaje (%)")
+
+                ax.bar_label(
+                    barras,
+                    labels=[
+                        f"{valor:.2f}%"
+                        for valor in proporciones.values
+                    ],
+                    padding=3
+                )
+
+                fig.tight_layout()
+
+                st.pyplot(fig, clear_figure=True)
+
+                plt.close(fig)
 
         # ==========================================
         # ITEM 7

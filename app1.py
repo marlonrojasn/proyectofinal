@@ -1,5 +1,5 @@
 import streamlit as st
-st.title("Especialización en Python For Analytics")
+st.title("Proyecto Análisis Churn")
 
 Módulos = st.sidebar.selectbox(
     "Desplegar",

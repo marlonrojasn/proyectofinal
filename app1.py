@@ -145,3 +145,72 @@ elif Módulos == "Items":
 
         st.write(f"Total de filas: {df.shape[0]}")
         st.write(f"Total de columnas: {df.shape[1]}")
+
+```python
+        st.subheader("Ítem 2: Clasificación de variables")
+
+        st.write(
+            "En este ítem se clasifican las variables del dataset en "
+            "numéricas y categóricas. Para realizar esta clasificación "
+            "se utiliza una función personalizada que analiza el tipo "
+            "de dato de cada variable."
+        )
+
+        def clasificar_variables(dataframe):
+
+            numericas = []
+            categoricas = []
+
+            for columna in dataframe.columns:
+
+                if pd.api.types.is_numeric_dtype(dataframe[columna]):
+                    numericas.append(columna)
+
+                else:
+                    categoricas.append(columna)
+
+            return numericas, categoricas
+
+        variables_numericas, variables_categoricas = clasificar_variables(df)
+
+        st.write("Variables numéricas")
+
+        st.write(
+            f"Cantidad de variables numéricas: "
+            f"{len(variables_numericas)}"
+        )
+
+        st.dataframe(
+            pd.DataFrame({
+                "Variable": variables_numericas
+            })
+        )
+
+        st.write("Variables categóricas")
+
+        st.write(
+            f"Cantidad de variables categóricas: "
+            f"{len(variables_categoricas)}"
+        )
+
+        st.dataframe(
+            pd.DataFrame({
+                "Variable": variables_categoricas
+            })
+        )
+
+        st.write("Conteo de variables")
+
+        conteo_variables = pd.DataFrame({
+            "Tipo de variable": [
+                "Numéricas",
+                "Categóricas"
+            ],
+            "Cantidad": [
+                len(variables_numericas),
+                len(variables_categoricas)
+            ]
+        })
+
+        st.dataframe(conteo_variables)
+

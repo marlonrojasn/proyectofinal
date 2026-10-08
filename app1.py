@@ -439,15 +439,13 @@ elif modulo == "Items":
                 )
 
 
-        # ==========================================
+               # ==========================================
         # ITEM 6
         # ==========================================
 
         elif item == "Ítem 6: Variables categóricas":
 
-            st.header(
-                "Ítem 6: Variables categóricas"
-            )
+            st.header("Ítem 6: Variables categóricas")
 
             variables_categoricas = df.select_dtypes(
                 include=["object", "category"]
@@ -457,9 +455,7 @@ elif modulo == "Items":
 
                 for variable in variables_categoricas:
 
-                    st.subheader(
-                        f"Variable: {variable}"
-                    )
+                    st.subheader(f"Variable: {variable}")
 
                     conteo = (
                         df[variable]
@@ -469,9 +465,7 @@ elif modulo == "Items":
                     )
 
                     porcentaje = (
-                        conteo /
-                        conteo.sum() *
-                        100
+                        conteo / conteo.sum() * 100
                     ).round(2)
 
                     tabla = pd.DataFrame({
@@ -485,7 +479,7 @@ elif modulo == "Items":
                         use_container_width=True
                     )
 
-                                        fig, ax = plt.subplots(figsize=(10, 5))
+                    fig, ax = plt.subplots(figsize=(10, 5))
 
                     ax.bar(
                         conteo.index.astype(str),
@@ -507,6 +501,12 @@ elif modulo == "Items":
                     st.pyplot(fig, clear_figure=True)
 
                     plt.close(fig)
+
+            else:
+
+                st.warning(
+                    "No se encontraron variables categóricas."
+                )
 
 
         # ==========================================

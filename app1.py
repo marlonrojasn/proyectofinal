@@ -485,36 +485,28 @@ elif modulo == "Items":
                         use_container_width=True
                     )
 
-                    fig, ax = plt.subplots(
-                        figsize=(10, 5)
-                    )
+                                        fig, ax = plt.subplots(figsize=(10, 5))
 
                     ax.bar(
                         conteo.index.astype(str),
                         conteo.values
                     )
 
-                    ax.set_title(
-                        f"Distribución de {variable}"
-                    )
-
+                    ax.set_title(f"Distribución de {variable}")
                     ax.set_xlabel(variable)
                     ax.set_ylabel("Frecuencia")
 
-                    plt.xticks(
+                    plt.setp(
+                        ax.get_xticklabels(),
                         rotation=45,
                         ha="right"
                     )
 
-                    st.pyplot(fig)
+                    fig.tight_layout()
+
+                    st.pyplot(fig, clear_figure=True)
 
                     plt.close(fig)
-
-            else:
-
-                st.warning(
-                    "No se encontraron variables categóricas."
-                )
 
 
         # ==========================================

@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import io
 
 st.title("Proyecto Análisis Churn")
 
@@ -9,7 +10,7 @@ st.sidebar.image("internet.jpg", width=150)
 
 Módulos = st.sidebar.selectbox(
     "Desplegar",
-    ["Home", "Carga del Data Set", "Ejercicio 2"]
+    ["Home", "Carga del Data Set", "Items"]
 )
 
 if Módulos == "Home":
@@ -84,8 +85,6 @@ elif Módulos == "Carga del Data Set":
         st.write(f"**Filas:** {filas}")
         st.write(f"**Columnas:** {columnas}")
 
-    else:
+elif Módulos == "Items": st.header("Ítems de Análisis") if "df" not in st.session_state: st.warning( "Primero debe cargar un archivo CSV " "en el módulo 'Carga del Data Set'." ) else: df = st.session_state["df"] # ===================================================== # ÍTEM 1 # ===================================================== st.subheader("Ítem 1: Información general del dataset") st.write( "En este ítem se analiza la estructura general del dataset, " "identificando el número de registros, las variables, " "los tipos de datos y la cantidad de valores nulos." ) st.write("### Información general (.info())") buffer = io.StringIO() df.info(buf=buffer) st.text(buffer.getvalue()) st.write("### Tipos de datos") tipos = pd.DataFrame({ "Variable": df.columns, "Tipo de dato": df.dtypes.astype(str).values }) st.dataframe(tipos) st.write("### Conteo de valores nulos") nulos = df.isnull().sum() tabla_nulos = pd.DataFrame({ "Variable": nulos.index, "Valores nulos": nulos.values }) st.dataframe(tabla_nulos) st.write( f"**Total de filas:** {df.shape[0]} \n" f"**Total de columnas:** {df.shape[1]}" )
 
-        st.info("Por favor, cargue el archivo TelcoCustomerChurn.csv.")
-
-
+  

@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 st.title("Proyecto Análisis Churn")
 
@@ -50,3 +51,41 @@ if Módulos == "Home":
         "• Matplotlib / Seaborn: utilizadas para la generación de visualizaciones.\n"
         "• NumPy: utilizada para operaciones y procesamiento numérico."
     )
+
+elif Módulos == "Carga del Data Set":
+
+    st.header("Carga del Data Set")
+
+    st.write(
+        "Seleccione el archivo CSV TelcoCustomerChurn para cargar "
+        "y visualizar la información del dataset."
+    )
+
+    archivo = st.file_uploader(
+        "Cargar archivo CSV",
+        type=["csv"]
+    )
+
+    if archivo is not None:
+
+        st.success("El archivo fue cargado correctamente.")
+
+        # Lectura del archivo CSV separado por comas
+        df = pd.read_csv(archivo, sep=",")
+
+        st.subheader("Vista previa del Dataset")
+
+        st.dataframe(df.head())
+
+        st.subheader("Dimensiones del Dataset")
+
+        filas, columnas = df.shape
+
+        st.write(f"**Filas:** {filas}")
+        st.write(f"**Columnas:** {columnas}")
+
+    else:
+
+        st.info("Por favor, cargue el archivo TelcoCustomerChurn.csv.")
+
+

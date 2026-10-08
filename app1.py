@@ -146,7 +146,6 @@ elif Módulos == "Items":
         st.write(f"Total de filas: {df.shape[0]}")
         st.write(f"Total de columnas: {df.shape[1]}")
 
-```python
         st.subheader("Ítem 2: Clasificación de variables")
 
         st.write(

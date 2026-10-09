@@ -441,6 +441,7 @@ elif modulo == "Items":
 
                # ==========================================
        
+      
         # ==========================================
         # ITEM 6: VARIABLES CATEGÓRICAS
         # ==========================================
@@ -450,17 +451,23 @@ elif modulo == "Items":
             st.header("Ítem 6: Variables categóricas")
 
             st.write(
-                "Se analizarán las variables SeniorCitizen y Churn "
-                "mediante conteos, gráficos de barras y proporciones."
+                "Se analizarán cuatro variables categóricas mediante "
+                "conteos, proporciones y gráficos de barras."
             )
 
-            variables_analizar = ["SeniorCitizen", "Churn"]
+            variables_analizar = [
+                "SeniorCitizen",
+                "Churn",
+                "gender",
+                "PaperlessBilling"
+            ]
 
             for variable in variables_analizar:
 
                 if variable not in df.columns:
                     st.warning(
-                        f"No se encontró la variable {variable} en el Dataset."
+                        f"No se encontró la variable '{variable}' "
+                        "en el Dataset."
                     )
                     continue
 
@@ -469,6 +476,7 @@ elif modulo == "Items":
                 # Preparar los datos
                 datos = df[variable].copy()
 
+                # Interpretación de SeniorCitizen
                 if variable == "SeniorCitizen":
                     datos = datos.map({
                         0: "No adulto mayor",
@@ -477,10 +485,10 @@ elif modulo == "Items":
                         "1": "Adulto mayor"
                     })
 
-                else:
-                    datos = datos.astype("string")
-
-                datos = datos.fillna("Valores nulos")
+                # Normalizar las categorías como texto
+                datos = datos.astype("string").fillna(
+                    "Valores nulos"
+                )
 
                 # Conteos
                 conteo = datos.value_counts()
@@ -490,8 +498,9 @@ elif modulo == "Items":
                     datos.value_counts(normalize=True) * 100
                 ).round(2)
 
+                # Tabla de frecuencias y proporciones
                 tabla = pd.DataFrame({
-                    "Categoría": conteo.index,
+                    "Categoría": conteo.index.astype(str),
                     "Conteo": conteo.values,
                     "Proporción (%)": [
                         proporciones[categoria]
@@ -507,7 +516,9 @@ elif modulo == "Items":
                     hide_index=True
                 )
 
-                # Gráfico de barras
+                # Gráfico de conteos
+                st.write("**Gráfico de barras: conteos**")
+
                 fig, ax = plt.subplots(figsize=(8, 4))
 
                 barras = ax.bar(
@@ -518,19 +529,24 @@ elif modulo == "Items":
                 ax.set_title(
                     f"Distribución de {variable}"
                 )
-
                 ax.set_xlabel("Categoría")
                 ax.set_ylabel("Cantidad de clientes")
 
                 ax.bar_label(barras, padding=3)
 
+                plt.setp(
+                    ax.get_xticklabels(),
+                    rotation=25,
+                    ha="right"
+                )
+
                 fig.tight_layout()
-
                 st.pyplot(fig, clear_figure=True)
-
                 plt.close(fig)
 
                 # Gráfico de proporciones
+                st.write("**Gráfico de barras: proporciones**")
+
                 fig, ax = plt.subplots(figsize=(8, 4))
 
                 barras = ax.bar(
@@ -541,7 +557,6 @@ elif modulo == "Items":
                 ax.set_title(
                     f"Proporción porcentual de {variable}"
                 )
-
                 ax.set_xlabel("Categoría")
                 ax.set_ylabel("Porcentaje (%)")
 
@@ -554,10 +569,14 @@ elif modulo == "Items":
                     padding=3
                 )
 
+                plt.setp(
+                    ax.get_xticklabels(),
+                    rotation=25,
+                    ha="right"
+                )
+
                 fig.tight_layout()
-
                 st.pyplot(fig, clear_figure=True)
-
                 plt.close(fig)
 
         # ==========================================

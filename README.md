@@ -98,13 +98,9 @@ Selecciona el módulo de carga y utiliza el botón para subir el archivo `TelcoC
 
 ## 6. Enlaces relevantes
 
-- **Repositorio en GitHub:** https://github.com/TU-USUARIO/TU-REPOSITORIO
-- **Aplicación desplegada:** PENDIENTE DE PUBLICACIÓN EN STREAMLIT COMMUNITY CLOUD
-- **Documentación de Python:** https://docs.python.org/3/
-- **Documentación de Pandas:** https://pandas.pydata.org/docs/
-- **Documentación de Streamlit:** https://docs.streamlit.io/
-- **Documentación de Matplotlib:** https://matplotlib.org/stable/
-- **Documentación de Seaborn:** https://seaborn.pydata.org/
+- **Repositorio en GitHub: https://github.com/marlonrojasn/proyectofinal/blob/main/app1.py**
+- **Documentación de Streamlit:[ https://docs.streamlit.io/](https://proyectofinal-marlonrojas.streamlit.app/#resumen-visual-de-churn)**
+
 
 ## 7. Autor
 

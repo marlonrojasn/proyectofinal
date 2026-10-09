@@ -49,7 +49,7 @@ proyectofinal/
 
 ### 4.1. Página principal y menú de navegación
 
-![Página principal y menú de navegación](./Sidebar.jpg)
+![Página principal y menú de navegación](./Sidebar.JPG)
 
 ### 4.2. Distribución de variables categóricas
 

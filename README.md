@@ -44,28 +44,20 @@ La aplicación permite explorar las variables mediante estadísticas descriptiva
 
 ## 4. Capturas de la aplicación
 
-Las siguientes capturas permiten documentar las principales funcionalidades de la aplicación.
+## 📸 Capturas de la aplicación
 
-### Página principal
+### 1. Página principal y menú de navegación
 
-<img width="325" height="610" alt="image" src="https://github.com/user-attachments/assets/ec618ecd-183e-43df-b4f9-cedfa92e1651" />
+![Sidebar](Sidebar.jpg)
 
+### 2. Distribución de variables categóricas
 
-![Página principal del proyecto](capturas/home.png)
+![Variables categóricas](disvarcat.JPG)
 
-### Carga del dataset
+### 3. Distribución de variables numéricas
 
-![Carga y vista previa del dataset](capturas/carga-dataset.png)
+![Variables numéricas](disvarnum.JPG)
 
-### Análisis exploratorio
-
-![Visualización de resultados del análisis](capturas/analisis.png)
-
-### Hallazgos y conclusiones
-
-![Resumen de hallazgos y conclusiones](capturas/conclusiones.png)
-
-> **Nota:** guarda las capturas reales de tu aplicación en una carpeta llamada `capturas` y utiliza estos nombres de archivo. Las imágenes no se generan automáticamente con este README.
 
 ## 5. Instrucciones de ejecución
 

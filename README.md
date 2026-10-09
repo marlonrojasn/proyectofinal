@@ -47,7 +47,7 @@ La aplicación permite explorar las variables mediante estadísticas descriptiva
 ## 📸 Capturas de la aplicación
 
 ### 1. Página principal y menú de navegación
-![Sidebar](./Sidebar.jpg)
+![Sidebar](./Sidebar.JPG)
 
 ### 2. Distribución de variables categóricas
 ![Variables categóricas](./disvarcat.JPG)

@@ -42,12 +42,12 @@ La aplicación permite explorar las variables mediante estadísticas descriptiva
 └── internet.jpg
 ```
 
-## 4. Capturas de la aplicación
+## 4. Capturas de la aplicación**
 
 ## 📸 Capturas de la aplicación
 
 ### 1. Página principal y menú de navegación
-![Sidebar](./Sidebar.JPG)
+st.image("Sidebar.JPG")
 
 ### 2. Distribución de variables categóricas
 ![Variables categóricas](./disvarcat.JPG)
